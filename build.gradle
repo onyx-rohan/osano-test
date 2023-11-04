@@ -1,0 +1,65 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { setUrl("https://maven.vaadin.com/vaadin-prereleases") }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+}
+
+plugins {
+    id("war")
+    id("com.vaadin")
+    id("org.gretty") version "4.0.3"
+}
+
+group = "org.example"
+version = "1.0-SNAPSHOT"
+
+java {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://maven.vaadin.com/vaadin-prereleases" }
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+dependencies {
+    /* -- Apache Commons -- */
+    implementation 'commons-io:commons-io:2.15.0'
+
+    /* -- Json -- */
+    implementation 'org.json:json:20231013'
+
+    /* -- OpenCSV -- */
+    implementation "com.opencsv:opencsv:5.8"
+
+    /* -- Java -- */
+    compileOnly "jakarta.servlet:jakarta.servlet-api:$javax_version"
+
+    /* -- Lombok -- */
+    compileOnly "org.projectlombok:lombok:$lombok_version"
+    annotationProcessor "org.projectlombok:lombok:$lombok_version"
+
+    /* -- Vaadin -- */
+    implementation enforcedPlatform("com.vaadin:vaadin-bom:$vaadin_version")
+    implementation "org.parttio:line-awesome:2.0.0"
+    implementation "com.vaadin:vaadin-core"
+
+    /* -- Logging -- */
+    implementation "org.slf4j:slf4j-simple:1.7.30"
+}
+
+defaultTasks("build")
+
+gretty {
+    contextPath = "/"
+    servletContainer = 'jetty11'
+}
+
+vaadin {
+    optimizeBundle = false
+}
